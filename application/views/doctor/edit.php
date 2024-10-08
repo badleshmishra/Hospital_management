@@ -23,7 +23,14 @@
 			<!-- /Breadcrumb -->
 			<!-- Main Content -->
 			<div class="container">
-
+<?php if ($this->session->flashdata('msg')): ?>
+    <div class="alert <?php echo $this->session->flashdata('msg_class'); ?> alert-dismissible fade show" role="alert">
+        <strong><?php echo $this->session->flashdata('msg'); ?></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+<?php endif; ?>
 				<div class="row">
 					<!-- Widget Item -->
 					<div class="col-md-12">
@@ -34,7 +41,7 @@
 							        <div class="form-group col-md-6">
 							            <label for="Doctor-name">Doctor Name</label>
 							            <input type="text" name="first_name" value="<?= $doctor_info->first_name ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
-							            <input type="text" name="first_name" value="<?= $doctor_info->doctor_id ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
+							            <input type="text" name="doctor_id" value="<?= $doctor_info->doctor_id ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
 							        </div>
 							        <div class="form-group col-md-6">
 							            <label for="dob">Date Of Birth</label>

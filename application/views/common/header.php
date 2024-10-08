@@ -159,8 +159,19 @@
 					                    </div>
 					                </li>
 					            <?php 
-					            } elseif ($this->session->userdata('role') === 'inventory_manager') {
-					                redirect('inventory_manager');
+					            } elseif ($this->session->userdata('role') === 'inventory_manager') { ?>
+					            	<li class="nav-item dropdown">
+					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
+					                    <div class="dropdown-menu">
+					                        <a class="dropdown-item" href="add-doctor.html">Add Doctor</a>
+					                        <a class="dropdown-item" href="doctors.html">All Doctors</a>
+					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
+					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
+					                    </div>
+					                </li>
+					                
+					            <?php
 					            }
 					        } else {
 					           echo "plz login to view details";

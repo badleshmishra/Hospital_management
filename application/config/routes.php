@@ -9,6 +9,10 @@ $route['logout'] = 'Auth/logout'; // Handle login logic
 
 $route['Doctor/profile'] = 'Doctor/get_details'; // Handle login logic
 $route['Doctor/edit_profile'] = 'Doctor/edit'; // Handle login logic
+$route['Doctor/save'] = 'Doctor/save'; // Handle login logic
+
+// $route['inventory_manager'] = 'inventory';
+
 
 /*
 | -------------------------------------------------------------------------

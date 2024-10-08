@@ -10,6 +10,15 @@
 
  <div class="container">
                 <div class="row">
+                  <?php if ($this->session->flashdata('msg')): ?>
+    <div class="alert <?php echo $this->session->flashdata('msg_class'); ?> alert-dismissible fade show" role="alert">
+        <strong><?php echo $this->session->flashdata('msg'); ?></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+<?php endif; ?>
+
                     <div class="col-sm-6 auth-box">
                         <div class="proclinic-box-shadow">
                             <h3 class="widget-title">Login</h3>
