@@ -163,7 +163,7 @@
 													                    
 													                </li>
 					            <?php 
-<<<<<<< HEAD
+
 					            } elseif ($this->session->userdata('role') === 'inventory_manager') { ?>
 					            	<li class="nav-item dropdown">
 					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -177,10 +177,10 @@
 					                </li>
 					                
 					            <?php
-=======
+
 					            } elseif ($this->session->userdata('role') === 'inventory_manager') {
 					                echo "hellow";
->>>>>>> bd3db1d259bc3afd8d5a54d536c1b70fa5891acd
+
 					            }
 					        } else {
 					           echo "plz login to view details";
