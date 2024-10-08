@@ -160,7 +160,26 @@
 					                </li>
 					            <?php 
 					            } elseif ($this->session->userdata('role') === 'inventory_manager') {
-					                redirect('inventory_manager');
+					                 ?>
+					                <li class="nav-item dropdown active">
+					                    <a class="nav-link dropdown-toggle"  href="<?= base_url('home') ?>" role="button" aria-haspopup="true"
+					                    aria-expanded="false"><span class="ti-home"></span> Dashboard</a>
+					                    
+					                </li>
+
+					                <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span>Inventory</a>
+						    		<div class="dropdown-menu">
+						        								
+						       			 <a class="dropdown-item" href="<?= base_url('inventory_manager/add_item') ?>">Add item</a>
+
+						       			 <a class="dropdown-item" href="<?= base_url('inventory_manager/view_item') ?>">View Item</a>
+						   			 </div>
+						   			</li>
+
+					               
+					               <?php 
 					            }
 					        } else {
 					           echo "plz login to view details";
