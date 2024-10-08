@@ -123,17 +123,16 @@
 					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
 					                    aria-expanded="false"><span class="ti-wheelchair"></span> Patients</a>
 					                    <div class="dropdown-menu">
-					                        <a class="dropdown-item" href="add-patient.html">Add Patient</a>
-					                        <a class="dropdown-item" href="patients.html">All Patients</a>
-					                        <a class="dropdown-item" href="about-patient.html">Patient Details</a>
-					                        <a class="dropdown-item" href="edit-patient.html">Edit Patient</a>
+					                        <a class="dropdown-item" href="<?= base_url() ?>receptionist/add_patient">Add Patient</a>
+					                        <a class="dropdown-item" href="<?=  base_url() ?>receptionist/view_patients">All Patients</a>
+					                        <a class="dropdown-item" href="<?= base_url() ?>receptionist/patient_details">Patient Details</a>
 					                    </div>
 					                </li>
 					                <li class="nav-item dropdown">
 					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
 					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
 					                    <div class="dropdown-menu">
-					                        <a class="dropdown-item" href="add-doctor.html">Add Doctor</a>
+					                        
 					                        <a class="dropdown-item" href="doctors.html">All Doctors</a>
 					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
 					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
@@ -158,7 +157,13 @@
 					                        <a class="dropdown-item" href="about-payment.html">Payment Invoice</a>
 					                    </div>
 					                </li>
+								 <li class="nav-item dropdown">
+								      <a href="<?= base_url() ?>receptionist/add_doctor" class="nav-link"   role="button" aria-haspopup="true"
+								     aria-expanded="false"><span class="ti-money"></span> Add Staff</a>
+													                    
+													                </li>
 					            <?php 
+<<<<<<< HEAD
 					            } elseif ($this->session->userdata('role') === 'inventory_manager') { ?>
 					            	<li class="nav-item dropdown">
 					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -172,6 +177,10 @@
 					                </li>
 					                
 					            <?php
+=======
+					            } elseif ($this->session->userdata('role') === 'inventory_manager') {
+					                echo "hellow";
+>>>>>>> bd3db1d259bc3afd8d5a54d536c1b70fa5891acd
 					            }
 					        } else {
 					           echo "plz login to view details";
@@ -181,25 +190,3 @@
 					</div> <!-- Closing the collapse navbar-collapse -->
 				</nav>
 			</div>
-			<!-- /Menu -->
-			<!-- Breadcrumb -->
-			<!-- Page Title -->
-			<!-- <div class="container mt-0">
-				<div class="row breadcrumb-bar">
-					<div class="col-md-6">
-						<h3 class="block-title">Quick Statistics</h3>
-					</div>
-					<div class="col-md-6">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item">
-								<a href="index.html">
-									<span class="ti-home"></span>
-								</a>
-							</li>
-							<li class="breadcrumb-item active">Dashboard</li>
-						</ol>
-					</div>
-				</div>
-			</div> -->
-			<!-- /Page Title -->
-			<!-- /Breadcrumb -->
