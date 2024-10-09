@@ -133,7 +133,7 @@
 					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
 					                    <div class="dropdown-menu">
 					                        
-					                        <a class="dropdown-item" href="doctors.html">All Doctors</a>
+					                        <a class="dropdown-item" href="<?=base_url() ?>receptionist/doctor_details">All Doctors</a>
 					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
 					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
 					                    </div>

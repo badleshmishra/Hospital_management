@@ -15,16 +15,6 @@ class Receptionist_model extends CI_Model {
         return false; // Return false on failure
     }
 
-    // Retrieve all patients from the database
-//    public function patient() {
-//     $this->db->select('patients.*, doctors.first_name as doctor_first_name, doctors.last_name as doctor_last_name');
-//     $this->db->from('patients');
-//     $this->db->join('doctors', 'patients.doctor_id = doctors.doctor_id', 'inner');
-//     $query = $this->db->get();
-    
-//     return $query->result_array(); 
-// }
-
 
     // Retrieve all doctors from the database
     public function get_doctors() {
@@ -131,6 +121,41 @@ public function add_new_receptionist($data) {
     $this->db->where('email', $email);
     $query = $this->db->get('users'); // Adjust if necessary
     return $query->row_array(); // Return a single row
+}
+
+  public function Doctor($doctor_id = null, $doctor_name = null) {
+    $this->db->select('doctors.*, specialties.specialty_name');
+    $this->db->from('doctors');
+    $this->db->join('specialties', 'doctors.specialty_id = specialties.specialty_id', 'inner');
+
+    // Check if doctor_id is provided
+    if ($doctor_id) {
+        $this->db->where('doctors.doctor_id', $doctor_id);
+    }
+
+    // Check if doctor_name is provided
+    if ($doctor_name) {
+        $this->db->group_start(); // Start a grouping for the WHERE clause
+        $this->db->like('doctors.doctor_name', $doctor_name);
+        $this->db->or_like('doctors.last_name', $doctor_name);
+        $this->db->group_end(); // End the grouping
+    }
+
+    $query = $this->db->get();
+
+    return $query->result_array();
+}
+
+  public function deleteDoctor($doctor_id)
+{
+    // Ensure the doctor ID is provided and not empty
+    if ($doctor_id) {
+        // Attempt to delete the doctor from the database
+        $this->db->where('doctor_id', $doctor_id);
+        return $this->db->delete('doctors'); // Assuming your table is named 'doctors'
+    }
+
+    return false;
 }
 
 

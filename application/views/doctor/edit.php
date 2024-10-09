@@ -40,7 +40,7 @@
 							    <div class="form-row">
 							        <div class="form-group col-md-6">
 							            <label for="Doctor-name">Doctor Name</label>
-							            <input type="text" name="first_name" value="<?= $doctor_info->first_name ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
+							            <input type="text" name="first_name" value="<?= $doctor_info->doctor_name ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
 							            <input type="text" name="doctor_id" value="<?= $doctor_info->doctor_id ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
 							        </div>
 							        <div class="form-group col-md-6">

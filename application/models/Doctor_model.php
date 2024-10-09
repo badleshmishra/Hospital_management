@@ -47,8 +47,8 @@ public function update($data) {
         }
 
         // Set the other fields
-        $this->db->set('first_name', $data['first_name']);
-        $this->db->set('date_of_birth', $data['date_of_birth']);
+        $this->db->set('doctor_name', $data['first_name']);
+        // $this->db->set('age', $data['age']);
         // $this->db->set('specialty_name', $data['specialty_name']);
         $this->db->set('phone', $data['phone']);
         $this->db->set('email', $data['email']);
