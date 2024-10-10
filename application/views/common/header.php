@@ -167,7 +167,7 @@
 					                    
 					                </li>
 
-					                <li class="nav-item dropdown">
+					                <-- <li class="nav-item dropdown">
 						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
 						   			 aria-expanded="false"><span class="ti-pencil-alt"></span>Inventory</a>
 						    		<div class="dropdown-menu">
@@ -176,7 +176,35 @@
 
 						       			 <a class="dropdown-item" href="<?= base_url('inventory_manager/view_item') ?>">View Item</a>
 						   			 </div>
+						   			</li>-->
+
+ 									 <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span> 
+						   			drug Inventory</a>
+						    		<div class="dropdown-menu">
+						        								
+						       			 <a class="dropdown-item" href="<?= base_url('drug_inventoryinsert') ?>">Add item</a>
+
+						       			 <a class="dropdown-item" href="<?= base_url('drug_inventory') ?>">View Item</a>
+						   			 </div>
 						   			</li>
+	
+
+
+						   			 <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span>Suplier</a>
+						    		<div class="dropdown-menu">
+						        								
+						       			<a class="dropdown-item" href="<?= base_url('suplier/store') ?>">Add item</a>
+
+						       			<a class="dropdown-item" href="<?= base_url('suplier') ?>">View Item</a>
+
+						   			 </div>
+						   			</li>
+
+
 
 					               
 					               <?php 

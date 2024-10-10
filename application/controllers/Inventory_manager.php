@@ -84,7 +84,7 @@ class Inventory_manager extends CI_Controller {
             redirect('inventory_manager/view_item');
         } else {
             // Handle error, item not deleted
-            $data['error'] = 'Could not delete item, pleasdsdfsfssdgssgsgfssgdase try again.';
+            $data['error'] = 'Could not delete item, please try again.';
             // Optionally load a view to show the error
         }
     }

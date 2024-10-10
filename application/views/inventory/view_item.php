@@ -27,7 +27,7 @@
         <thead>
             <tr>
                 <th>Inventory ID</th> 
-                <th>Itemfafaf Name</th>
+                <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Added By</th>
                 <th>Created At</th>
