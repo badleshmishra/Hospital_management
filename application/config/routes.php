@@ -9,6 +9,13 @@ $route['logout'] = 'Auth/logout'; // Handle login logic
 
 $route['Doctor/mia'] = 'Doctor/get_details'; // Handle login logic
 $route['Doctor/edit_profile'] = 'Doctor/edit'; // Handle login logic
+$route['Doctor/save'] = 'Doctor/save'; // Handle login logic
+
+// $route['inventory_manager'] = 'inventory';
+
+
+$route['receptionist/view_patients'] = 'receptionist/patients';
+
 
 //$route['inventory_manager/add_item'] = 'inventory_manager/add_item';
 

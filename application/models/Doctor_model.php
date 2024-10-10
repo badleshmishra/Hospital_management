@@ -43,12 +43,12 @@ public function update($data) {
         // Check if 'image' exists in data to perform update operation
         if (isset($data['image'])) {
             // If image is being updated, include it in the update query
-            $this->db->set('image', $data['image']);
+            $this->db->set('profile_image', $data['image']);
         }
 
         // Set the other fields
-        $this->db->set('first_name', $data['first_name']);
-        $this->db->set('date_of_birth', $data['date_of_birth']);
+        $this->db->set('doctor_name', $data['first_name']);
+        // $this->db->set('age', $data['age']);
         // $this->db->set('specialty_name', $data['specialty_name']);
         $this->db->set('phone', $data['phone']);
         $this->db->set('email', $data['email']);
@@ -57,7 +57,7 @@ public function update($data) {
         // $this->db->set('address', $data['address']);
         
         // Assuming you have a 'doctor_id' to identify which doctor to update
-        $this->db->where('doctor_id', $this->input->post('doctor_id'));
+        $this->db->where('doctor_id', $data['doctor_id']);
 
         // Execute the update
         return $this->db->update('doctors'); // 'doctors' is the table name
