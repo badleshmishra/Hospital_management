@@ -1,12 +1,9 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-<<<<<<< HEAD
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-=======
 
->>>>>>> origin/master
 
 class Doctor extends CI_Controller {
 

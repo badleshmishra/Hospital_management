@@ -19,6 +19,7 @@
 	<!-- jvectormap -->
 	<link rel="stylesheet" href="<?= $base_url ?>assets/css/jquery-jvectormap.css">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 
 	<script src="<?= $base_url ?>assets/js/modernizr.min.js"></script>
