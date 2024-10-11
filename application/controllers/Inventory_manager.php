@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Inventory_manager extends CI_Controller {
 
-
     public function __construct() {
         parent::__construct(); // Call parent's constructor for session and role check
         $this->load->model('Inventory_model'); // Load the Inventory model
@@ -47,14 +46,12 @@ class Inventory_manager extends CI_Controller {
         // Load the view for adding an item
         $data['base_url'] = $this->config->item('base_url');
         $data['main_content'] = 'inventory/add_item';
-
    
     public function index() {
 //die(print_r($this->session->userdata(), true));
         // Inventory manager's dashboard view
         $data=array();
         $data['main_content'] = 'inventory_manager/dashboard';
-
         $this->load->view('common/template', $data);
     }
 
