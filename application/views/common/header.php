@@ -133,7 +133,7 @@
 					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
 					                    <div class="dropdown-menu">
 					                        
-					                        <a class="dropdown-item" href="doctors.html">All Doctors</a>
+					                        <a class="dropdown-item" href="<?=base_url() ?>receptionist/doctor_details">All Doctors</a>
 					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
 					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
 					                    </div>
@@ -164,22 +164,46 @@
 													                </li>
 					            <?php 
 
-					            } elseif ($this->session->userdata('role') === 'inventory_manager') { ?>
-					            	<li class="nav-item dropdown">
-					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
-					                    <div class="dropdown-menu">
-					                        <a class="dropdown-item" href="add-doctor.html">Add Doctor</a>
-					                        <a class="dropdown-item" href="doctors.html">All Doctors</a>
-					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
-					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
-					                    </div>
+					            }  elseif ($this->session->userdata('role') === 'inventory_manager') {
+					                 ?>
+					                <li class="nav-item dropdown active">
+					                    <a class="nav-link dropdown-toggle"  href="<?= base_url('home') ?>" role="button" aria-haspopup="true"
+					                    aria-expanded="false"><span class="ti-home"></span> Dashboard</a>
+					                    
 					                </li>
-					                
-					            <?php
 
-					            } elseif ($this->session->userdata('role') === 'inventory_manager') {
-					                echo "hellow";
+					               
+
+ 									 <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span> 
+						   			drug Inventory</a>
+						    		<div class="dropdown-menu">
+						        								
+						       			 <a class="dropdown-item" href="<?= base_url('drug_inventory/add') ?>">Add item</a>
+
+						       			 <a class="dropdown-item" href="<?= base_url('drug_inventory') ?>">View Item</a>
+						   			 </div>
+						   			</li>
+	
+
+
+						   			 <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span>Suplier</a>
+						    		<div class="dropdown-menu">
+						        								
+						       			<a class="dropdown-item" href="<?= base_url('suplier/store') ?>">Add item</a>
+
+						       			<a class="dropdown-item" href="<?= base_url('suplier') ?>">View Item</a>
+
+						   			 </div>
+						   			</li>
+
+
+
+					               
+					               <?php 
 
 					            }
 					        } else {

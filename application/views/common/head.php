@@ -1,4 +1,4 @@
-<meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>ProClinic-Bootstrap4 Hospital Admin</title>
@@ -18,5 +18,6 @@
 	<link rel="stylesheet" href="<?= $base_url ?>assets/charts/css/morris.css">
 	<!-- jvectormap -->
 	<link rel="stylesheet" href="<?= $base_url ?>assets/css/jquery-jvectormap.css">
+	<link rel="stylesheet" href="<?= $base_url ?>assets/datatable/dataTables.bootstrap4.min.css">
 
 	<script src="<?= $base_url ?>assets/js/modernizr.min.js"></script>

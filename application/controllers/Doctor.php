@@ -1,5 +1,8 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 class Doctor extends CI_Controller {
@@ -89,9 +92,9 @@ error_reporting(E_ALL);
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             // Prepare the data array for doctor information
             $data = array(
-                'first_name' => $this->input->post('first_name'),
+                'doctor_name' => $this->input->post('first_name'),
                 'doctor_id' => $this->input->post('doctor_id'),
-                'date_of_birth' => $this->input->post('date_of_birth'),
+                // 'age' => $this->input->post('age'),
                 // 'specialty_name' => $this->input->post('specialization'),
                 'phone' => $this->input->post('phone'),
                 'email' => $this->input->post('email'),
@@ -139,7 +142,7 @@ error_reporting(E_ALL);
                 $this->session->set_flashdata('msg_class', "alert-danger");
             }
 
-            redirect(base_url('Doctor/profile'));
+             redirect('receptionist/doctor_details');
             }
     }
 
