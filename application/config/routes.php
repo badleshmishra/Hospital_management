@@ -7,11 +7,11 @@ $route['login'] = 'auth/login_view'; // or just 'auth/login' if you handle it in
 $route['auth/login'] = 'Auth/login'; // Handle login logic
 $route['logout'] = 'Auth/logout'; // Handle login logic
 
-$route['Doctor/mia'] = 'Doctor/get_details'; // Handle login logic
+$route['Doctor/profile'] = 'Doctor/get_details'; // Handle login logic
 $route['Doctor/edit_profile'] = 'Doctor/edit'; // Handle login logic
 $route['Doctor/save'] = 'Doctor/save'; // Handle login logic
 
-// $route['inventory_manager'] = 'inventory';
+ $route['inventory_manager'] = 'inventory_manager';
 
 
 $route['receptionist/view_patients'] = 'receptionist/patients';

@@ -1,6 +1,6 @@
 <?php defined("BASEPATH") or exit("No direct script access allowed");
 
-ini_set("display_errors", 1);
+ini_set("display_errors", 0);
 ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 
@@ -200,6 +200,7 @@ public function add_doctor()
                 "specialty_id" => $this->input->post("specialist_id"),
                 "address" => $this->input->post("address"),
             ];
+            var_dump($doctorData);
 
             // Check for existing email
             $email = $doctorData["email"];
@@ -207,25 +208,26 @@ public function add_doctor()
                 $email
             );
 
-            if ($existingUser) {
-                $this->session->set_flashdata(
-                    "error",
-                    "This email is already registered. Please use a different email."
-                );
-                redirect("receptionist/add_doctor"); // Redirect to the form
+            // if ($existingUser) {
+            //     $this->session->set_flashdata(
+            //         "error",
+            //         "This email is already registered. Please use a different email."
+            //     );
+            //     redirect("receptionist/add_doctor"); // Redirect to the form
+            // }
+            $specialty_id = $this->input->post('specialty_id');
+            if (empty($specialty_id)) {
+                $specialty_id = NULL;  // Set NULL if the field is empty
             }
-
             // Create user data
             $userData = [
                 "username" => $doctorData["doctor_name"],
-                "password" => password_hash(
-                    $this->input->post("password"),
-                    PASSWORD_DEFAULT
-                ),
+                "password" =>$this->input->post("password"),
                 "role" => $this->input->post("role"),
                 "email" => $doctorData["email"],
-                "specialty_id" => $doctorData["specialty_id"],
+                "specialty_id" => $specialty_id
             ];
+            var_dump($userData);
 
             // Insert user first
             $user_id = $this->Receptionist_model->add_new_user($userData);

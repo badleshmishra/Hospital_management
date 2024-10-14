@@ -111,7 +111,7 @@ $(document).ready(function() {
         } else {
             $('#specialist-container').hide();
             $('#room-number-container').hide();
-            $('#specialist').val(''); // Reset specialist selection
+            $('#specialist').val(null); // Reset specialist selection
         }
     });
 });

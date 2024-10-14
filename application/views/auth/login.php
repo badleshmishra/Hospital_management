@@ -1,10 +1,10 @@
-
+<!-- 
 
 <form method="post" action="<?= base_url('auth/login'); ?>">
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Login</button>
-</form>
+</form> -->
 
 
 
@@ -43,14 +43,14 @@
                                 </div>
                                 <!-- /.form-group -->
                                 <!-- Check Box -->      
-                                <div class="form-check row">
+                               <!--  <div class="form-check row">
                                     <div class="col-sm-12 text-left">
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" type="checkbox" id="ex-check-2">
                                             <label class="custom-control-label" for="ex-check-2">Remember Me</label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- /Check Box --> 
                                 <!-- Login Button -->           
                                 <div class="button-btn-block">
