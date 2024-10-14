@@ -45,12 +45,14 @@
 
 <div class="container">
     <?php if ($this->session->flashdata('message')): ?>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Warning!</strong> <?= $this->session->flashdata('message'); ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>delete!</strong> <?= $this->session->flashdata('message'); ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
     </div>
+
+
     <?php endif; ?>
 
     <div class="row">
@@ -87,12 +89,39 @@
                             <?php if (!empty($doctor['details'])): ?>
                                 <?php foreach ($doctor['details'] as $detail): ?>
                                     <tr>
-                                        <td><?= ($detail['doctor_id']) ?></td>
-                                        <td><?= ($detail['doctor_name']) ?></td>
-                                        <td><?= ($detail['phone']) ?></td>
-                                        <td><?= ($detail['email']) ?></td>
-                                        <td><?= ($detail['gender']) ?></td>
-                                        <td><?= ($detail['specialty_name']) ?></td>
+                                       <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= $data['details']['doctor_id'] ?>">
+                                        <?= ($detail['doctor_id']) ?>
+                                    </a>
+                                    
+
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['doctor_name']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['phone']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['email']) ?>
+                                    </a>
+                                  </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['gender']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['specialty_name']) ?>
+                                    </a>
+                                </td>
+
                                         <td>
                                             <form class="d-inline-block" action="<?= $base_url ?>Doctor/edit_profile" method="post">
                                             <input type="hidden" name="edit_id" value="<?= ($detail['doctor_id']) ?>">
@@ -102,8 +131,8 @@
                                         </form>
 
                                         <!-- Delete Doctor Form -->
-                                        <form class="d-inline-block" action="<?= $base_url ?>Doctor/delete_doctor" method="post" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
-                                            <input type="hidden" name="delete_id" value="<?= ($detail['doctor_id']) ?>">
+                                        <form class="d-inline-block" action="<?= $base_url ?>receptionist/delete_doctor" method="post" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+                                            <input type="text" name="delete_id" value="<?= ($detail['doctor_id']) ?>">
                                             <button type="submit" class="btn btn-danger mb-2">
                                                 <span class="ti-trash"></span> Delete Doctor
                                             </button>
@@ -115,14 +144,38 @@
                             <?php else: ?>
                                 <?php foreach ($all_doctors as $detail): ?>
                                     <tr>
-                                        <td><?= ($detail['doctor_id']) ?></td>
-                                        <td><?= ($detail['doctor_name']) ?></td>
-                                        <td><?= ($detail['phone']) ?></td>
-                                        <td><?= ($detail['email']) ?></td>
-                                        <td><?= ($detail['gender']) ?></td>
-                                        <td><?= ($detail['specialty_name']) ?></td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['doctor_id']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['doctor_name']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['phone']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['email']) ?>
+                                    </a>
+                                  </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['gender']) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url() ?>receptionist/doctor_profiles/<?= ($detail['doctor_id']) ?>">
+                                        <?= ($detail['specialty_name']) ?>
+                                    </a>
+                                </td>
 
-                                        <td>
+                        <td>
     <!-- Edit Doctor Form -->
                                         <form class="d-inline-block" action="<?= $base_url ?>Doctor/edit_profile" method="post">
                                             <input type="hidden" name="edit_id" value="<?= ($detail['doctor_id']) ?>">

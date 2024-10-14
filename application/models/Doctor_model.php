@@ -11,10 +11,7 @@ class Doctor_model extends CI_Model
         // Start building the query
         $this->db->select("doctors.*, specialties.specialty_name"); // Select doctor details and the specialty name
         $this->db->from("doctors");
-        $this->db->join(
-            "specialties",
-            "doctors.specialty_id = specialties.specialty_id"
-        ); // Assuming 'specialty_id' is the primary key in 'specialties'
+        $this->db->join("specialties","doctors.specialty_id = specialties.specialty_id","inner"); // Assuming 'specialty_id' is the primary key in 'specialties'
 
         // Check if user_id is provided
         if ($user_id !== null) {
@@ -49,8 +46,8 @@ class Doctor_model extends CI_Model
         }
 
         // Set the other fields
-        $this->db->set("doctor_name", $data["first_name"]);
-        // $this->db->set('age', $data['age']);
+        $this->db->set("doctor_name", $data["doctor_name"]);
+        $this->db->set('age', $data['age']);
         // $this->db->set('specialty_name', $data['specialty_name']);
         $this->db->set("phone", $data["phone"]);
         $this->db->set("email", $data["email"]);

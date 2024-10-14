@@ -36,7 +36,7 @@
                             <select name="role" class="form-control" id="role" required>
                                 <option >Select a Role</option>
                                 <option value="doctor">Doctor</option>
-                                <option value="receptionist">Receptionist</option>
+                                <!-- <option value="receptionist">Receptionist</option> -->
                                 <option value="inventory_manager">Inventory Manager</option>
                             </select>
                         </div>

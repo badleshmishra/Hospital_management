@@ -1,12 +1,9 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-<<<<<<< HEAD
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-=======
 
->>>>>>> origin/master
 
 class Doctor extends CI_Controller {
 
@@ -61,33 +58,28 @@ error_reporting(E_ALL);
         $this->load->view('common/template', $data);
     }
 
-    public function edit() {
+  public function edit()
+{
+    if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        $data = array();
+        $data['doctor_id'] = $this->input->post('edit_id');
 
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
-                $data = array();
-                $data['doctor_id'] = $this->input->post('edit_id');
-                
-                // Debug to check the doctor_id
-                
+        if ($data['doctor_id']) {
+            // Fetch doctor information
+            $data['doctor_info'] = $this->Doctor_model->get_doctor_info(null, $data['doctor_id']);
+        } else {
+            echo "Doctor ID not found!";
+            return;
+        }
 
-                if ($data['doctor_id']) {
-                    // Fetch doctor information
-                    $data['doctor_info'] = $this->Doctor_model->get_doctor_info(null, $data['doctor_id']);
-                    
-                } else {
-                    // Doctor ID not provided
-                    echo "Doctor ID not found!";
-                    return;
-                }
-
-                $data['main_content'] = 'doctor/edit';
-                $data['base_url'] = base_url();
-                
-                $this->load->view('common/template', $data);
-            } else {
-                redirect(base_url('home'));
-            }
+        $data['main_content'] = 'doctor/edit';
+        $data['base_url'] = base_url();
+        $this->load->view('common/template', $data);
+    } else {
+        redirect(base_url('home'));
     }
+}
+
 
 
     public function save() {
@@ -95,9 +87,9 @@ error_reporting(E_ALL);
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             // Prepare the data array for doctor information
             $data = array(
-                'doctor_name' => $this->input->post('first_name'),
+                'doctor_name' => $this->input->post('doctor_name'),
                 'doctor_id' => $this->input->post('doctor_id'),
-                // 'age' => $this->input->post('age'),
+                'age' => $this->input->post('age'),
                 // 'specialty_name' => $this->input->post('specialization'),
                 'phone' => $this->input->post('phone'),
                 'email' => $this->input->post('email'),

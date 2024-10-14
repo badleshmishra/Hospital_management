@@ -158,6 +158,76 @@ public function add_new_receptionist($data) {
     return false;
 }
 
+    public function get_all_managers() {
+        $query = $this->db->get('inventory_managers'); // Fetch all records from 'inventory' table
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Return the result as an array of items
+        } else {
+            return false; // Return false if no items are found
+        }
+
+  }
+
+
+ public function get_manager_info($user_id = null, $manager_id = null)
+    {
+        // Debug for troubleshooting
+
+        // Start building the query
+        $this->db->select("*"); // Select doctor details and the specialty name
+        $this->db->from("inventory_managers");
+
+      
+        if ($manager_id !== null) {
+            $this->db->where("manager_id", $manager_id
+            ); // Assuming 'doctor_id' is a column in 'doctors'
+        }
+        // If neither is provided, return false
+        else {
+            return false;
+        }
+
+        // Execute the query
+        $query = $this->db->get();
+
+        // Return the result row if found, else return false
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+  
+ public function update($manager) {
+    // Check if 'image' exists in data to perform update operation
+    if (isset($manager["image"])) {
+        // If image is being updated, include it in the update query
+        $this->db->set("profile_image", $manager["image"]);
+    }
+
+    // Set the other fields
+    $this->db->set("manager_name", $manager["manager_name"]);
+    $this->db->set("age", $manager['age']);
+    $this->db->set("phone", $manager["phone"]);
+    $this->db->set("email", $manager["email"]);
+    $this->db->set("gender", $manager["gender"]);
+
+    // You need to pass the manager's ID in the $manager array
+    $this->db->where("manager_id", $manager["manager_id"]);
+
+    // Execute the update
+    return $this->db->update("inventory_managers"); // 'inventory_managers' is the table name
+}
+  
+
+  public function getdoctorprofile($doctor_id) {
+   $this->db->select('doctors.*, specialties.specialty_name');
+    $this->db->from('doctors');
+    $this->db->join('specialties', 'doctors.specialty_id = specialties.specialty_id', 'inner');
+    $this->db->where('doctor_id', $doctor_id);
+    $query = $this->db->get(); // Missing part
+    return $query->row_array(); // Assuming you're expecting a single record
+}
 
 
 }

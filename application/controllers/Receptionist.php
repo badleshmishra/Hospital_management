@@ -418,4 +418,117 @@ public function delete_doctor()
 }
 
 
+public function inventory_details($item_id = null) {
+
+    $data = array();
+    
+    $inventory_details = $this->Receptionist_model->get_all_managers();
+
+
+    // Check if the inventory details exist
+    if ($inventory_details) {
+        // Display the inventory details (for simplicity, showing as JSON)
+        $data['details'] = $inventory_details;
+    } else {
+        // If not found, show an error message
+        echo "Inventory details not found for this item.";
+    }
+
+    // Load the inventory profile view
+    $data['base_url'] = base_url();
+    $data['main_content'] = 'receptionist/inventory_details';
+    $this->load->view('common/template', $data);
+}
+
+  public function edit()
+{
+    if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        $data = array();
+        $data['manger_id'] = $this->input->post('edit_id');
+
+        if ($data['manger_id']) {
+            // Fetch doctor information
+            $data['manager_info'] = $this->Receptionist_model->get_manager_info(null, $data['manger_id']);
+        } else {
+            echo "Doctor ID not found!";
+            return;
+        }
+
+        $data['main_content'] = 'receptionist/inventory_info';
+        $data['base_url'] = base_url();
+        $this->load->view('common/template', $data);
+    } else {
+        redirect(base_url('home'));
+    }
+}
+
+
+public function save() {
+    if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        // Correct syntax for assigning array values
+        $manager = array(
+            'manager_id' => $this->input->post('manager_id'), // Make sure you are receiving the manager_id
+            'manager_name' => $this->input->post('manager_name'),
+            'last_name' => $this->input->post('last_name'),
+            'age' => $this->input->post('age'),
+            'phone' => $this->input->post('phone'),
+            'gender' => $this->input->post('gender'),
+            'email' => $this->input->post('email'),
+            'address' => $this->input->post('address')
+        );
+
+        // Load the upload library
+        $this->load->library('upload');
+
+        // Define the upload path
+        $uploadPath = FCPATH . "/assets/images/";
+
+        // Log the upload path for debugging
+        log_message('debug', 'Upload Path: ' . $uploadPath);
+
+        // Check if an image file was uploaded
+        if (!empty($_FILES['file_upload']['name'])) {
+            // Set upload configuration
+            $config['upload_path'] = $uploadPath;
+            $config['allowed_types'] = 'jpg|jpeg|png|gif|avif';
+            $config['file_name'] = time() . '_' . $_FILES['file_upload']['name'];
+
+            $this->upload->initialize($config);
+
+            // Attempt to upload the file
+            if ($this->upload->do_upload('file_upload')) {
+                $uploadData = $this->upload->data();
+                $manager['image'] = $uploadData['file_name']; // Store the uploaded image name
+                log_message('debug', 'Image uploaded successfully: ' . $manager['image']);
+            } else {
+                log_message('error', "Image upload failed: " . $this->upload->display_errors());
+            }
+        }
+
+        // Update manager information in the database
+        if ($this->Receptionist_model->update($manager)) {
+            $this->session->set_flashdata('msg', "Manager information updated successfully.");
+            $this->session->set_flashdata('msg_class', "alert-success");
+        } else {
+            $this->session->set_flashdata('msg', "Failed to update manager information.");
+            $this->session->set_flashdata('msg_class', "alert-danger");
+        }
+
+        // Display the manager ID for debugging purposes
+        var_dump($manager['manager_id']);
+
+        redirect('receptionist/inventory_details');
+    }
+}
+
+     public function doctor_profiles($doctor_id){
+        $data =array();
+        $data['base_url'] = base_url();        
+        $data['details']=$this->Receptionist_model->getdoctorprofile($doctor_id);
+        $data['main_content']='receptionist/doctor_profiles';
+        $this->load->view('common/template',$data);
+    }
+
+
+
 }

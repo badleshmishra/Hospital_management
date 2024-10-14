@@ -36,53 +36,53 @@
 					<div class="col-md-12">
 						<div class="widget-area-2 proclinic-box-shadow">
 							<h3 class="widget-title">Edit Doctor</h3>
-							<form action="<?= $base_url ?>doctor/save" method="post" enctype="multipart/form-data">
+							<form action="<?= $base_url ?>receptionist/save" method="post" enctype="multipart/form-data">
 							    <div class="form-row">
 							        <div class="form-group col-md-6">
-							            <label for="Doctor-name">Doctor Name</label>
-							            <input type="text" name="doctor_name" value="<?= $doctor_info->doctor_name ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
-							            <input type="text" name="doctor_id" value="<?= $doctor_info->doctor_id ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
+							            <label for="Doctor-name">Manager Name</label>
+							            <input type="text" name="manager_name" value="<?= $manager_info->manager_name ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
+							            <input type="text" name="manager_id" value="<?= $manager_info->manager_id ?>" class="form-control" placeholder="Doctor name" id="Doctor-name">
 							        </div>
 							        <div class="form-group col-md-6">
 							            <label for="dob">Age</label>
-							            <input type="text" name="age" value="<?= $doctor_info->age ?>" class="form-control" id="age">
+							            <input type="text" name="age" value="<?= $manager_info->age ?>" class="form-control" id="age">
 							        </div>
 							        <!-- <div class="form-group col-md-6">
 							            <label for="specialization">Specialization</label>
-							            <input type="text" name="specialty_name" value="doctor_info->specialty_name ?>" placeholder="Specialization" class="form-control" id="specialization">
+							            <input type="text" name="specialty_name" value="manager_info->specialty_name ?>" placeholder="Specialization" class="form-control" id="specialization">
 							        </div> -->
 							        <!-- <div class="form-group col-md-6">
 							            <label for="experience">Experience</label>
-							            <input type="text" name="experience" value="doctor_info->experience ?>" placeholder="Experience" class="form-control" id="experience">
+							            <input type="text" name="experience" value="manager_info->experience ?>" placeholder="Experience" class="form-control" id="experience">
 							        </div> -->
 							        <!-- <div class="form-group col-md-6">
 							            <label for="age">Age</label>
-							            <input type="text" name="age" value="<?= $doctor_info->age ?>" placeholder="Age" class="form-control" id="age">
+							            <input type="text" name="age" value="<?= $manager_info->age ?>" placeholder="Age" class="form-control" id="age">
 							        </div> -->
 							        <div class="form-group col-md-6">
 							            <label for="phone">Phone</label>
-							            <input type="text" name="phone" value="<?= $doctor_info->phone ?>" placeholder="Phone" class="form-control" id="phone">
+							            <input type="text" name="phone" value="<?= $manager_info->phone ?>" placeholder="Phone" class="form-control" id="phone">
 							        </div>
 
 							        <div class="form-group col-md-6">
 							            <label for="email">Email</label>
-							            <input type="email" name="email" value="<?= $doctor_info->email ?>" placeholder="Email" class="form-control" id="Email">
+							            <input type="email" name="email" value="<?= $manager_info->email ?>" placeholder="Email" class="form-control" id="Email">
 							        </div>
 							        <div class="form-group col-md-6">
 							            <label for="gender">Gender</label>
 							            <select name="gender" class="form-control" id="gender">
-							                <option value="Male" <?= $doctor_info->gender === 'Male' ? 'selected' : '' ?>>Male</option>
-							                <option value="Female" <?= $doctor_info->gender === 'Female' ? 'selected' : '' ?>>Female</option>
-							                <option value="Other" <?= $doctor_info->gender === 'Other' ? 'selected' : '' ?>>Other</option>
+							                <option value="Male" <?= $manager_info->gender === 'Male' ? 'selected' : '' ?>>Male</option>
+							                <option value="Female" <?= $manager_info->gender === 'Female' ? 'selected' : '' ?>>Female</option>
+							                <option value="Other" <?= $manager_info->gender === 'Other' ? 'selected' : '' ?>>Other</option>
 							            </select>
 							        </div>
 							        <!-- <div class="form-group col-md-6">
 							            <label for="about-doctor">Doctor Details</label>
-							            <textarea name="about" placeholder="Doctor Details" class="form-control" id="about-doctor" rows="3"><?= $doctor_info->about ?></textarea>
+							            <textarea name="about" placeholder="Doctor Details" class="form-control" id="about-doctor" rows="3"><?= $manager_info->about ?></textarea>
 							        </div>
 							        <div class="form-group col-md-6">
 							            <label for="address">Address</label>
-							            <textarea name="address" placeholder="Address" class="form-control" id="address" rows="3"><?= $doctor_info->address ?></textarea>
+							            <textarea name="address" placeholder="Address" class="form-control" id="address" rows="3"><?= $manager_info->address ?></textarea>
 							        </div> -->
 							        <div class="form-group col-md-12">
 							            <label for="file">File</label>
@@ -97,7 +97,9 @@
 							            </div>
 							        </div>
 							        <div class="form-group col-md-6 mb-3">
-							            <button type="submit" class="btn btn-primary btn-lg">Update</button>
+							            <button type="submit" class="btn btn-primary btn-lg">
+							            Update</button>
+							            <input type="text" name="manager_id" value="<?php echo $manager_info->manager_id; ?>">
 							        </div>
 							    </div>
 							</form>
