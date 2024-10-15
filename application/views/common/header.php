@@ -202,6 +202,20 @@
 
 
 
+						   			 <li class="nav-item dropdown">
+						    		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"aria-haspopup="true"
+						   			 aria-expanded="false"><span class="ti-pencil-alt"></span>Drug department</a>
+						    		<div class="dropdown-menu">
+						        					
+						       			<a class="dropdown-item" href="<?= base_url('drug_department/add_department') ?>">Add item</a>
+
+						       			<a class="dropdown-item" href="<?= base_url('drug_department') ?>">View Item</a>
+
+						   			 </div>
+						   			</li> 
+
+
+
 					               
 					               <?php 
 

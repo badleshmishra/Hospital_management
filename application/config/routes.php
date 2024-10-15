@@ -17,6 +17,7 @@ $route['Doctor/save'] = 'Doctor/save'; // Handle login logic
 $route['receptionist/view_patients'] = 'receptionist/patients';
 
 
+
 //$route['inventory_manager/add_item'] = 'inventory_manager/add_item';
 
 
