@@ -38,7 +38,7 @@ class Drug_department extends CI_Controller {
             
             redirect('Drug_department');
         } else {
-        
+            $data = array();
             $data['base_url'] = $this->config->item('base_url');
             $data['main_content'] = 'drug_department/add';
 
