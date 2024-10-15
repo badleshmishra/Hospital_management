@@ -229,5 +229,18 @@ public function add_new_receptionist($data) {
     return $query->row_array(); // Assuming you're expecting a single record
 }
 
+    public function deleteManager($manager_id)
+    {
+        if (!$manager_id) {
+            return false;
+        }
 
+        $this->db->where('manager_id', $manager_id);
+        $deleted = $this->db->delete('inventory_managers');
+        if ($deleted) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

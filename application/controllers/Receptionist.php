@@ -420,27 +420,76 @@ public function delete_doctor()
 }
 
 
-public function inventory_details($item_id = null) {
+// public function inventory_details($manager_id = null) {
 
-    $data = array();
+//     $data = array();
     
-    $inventory_details = $this->Receptionist_model->get_all_managers();
+//     $inventory_details = $this->Receptionist_model->get_all_managers();
 
 
-    // Check if the inventory details exist
-    if ($inventory_details) {
-        // Display the inventory details (for simplicity, showing as JSON)
-        $data['details'] = $inventory_details;
-    } else {
-        // If not found, show an error message
-        echo "Inventory details not found for this item.";
+//     // Check if the inventory details exist
+//     if ($inventory_details) {
+//         // Display the inventory details (for simplicity, showing as JSON)
+//         $data['details'] = $inventory_details;
+//     } else {
+//         // If not found, show an error message
+//         echo "Inventory details not found for this item.";
+//     }
+
+//     // Load the inventory profile view
+//     $data['base_url'] = base_url();
+//     $data['main_content'] = 'receptionist/inventory_details';
+//     $this->load->view('common/template', $data);
+// }
+
+public function inventory_details()
+{
+    // Initialize the data array and the inventory array
+    $data = []; // This will hold the view data
+    $inventory = []; // This will hold inventory details
+
+    // Get the item ID or name from the POST parameters
+    $manager_id = isset($_POST["manager_id"]) ? $_POST["manager_id"] : null;
+    $manager_name = isset($_POST["manager_name"]) ? $_POST["manager_name"] : null;
+
+    // Check if the form has been submitted
+    if ($manager_id || $manager_name) {
+        // Determine if the input is an ID or a name
+        if ($manager_id) {
+            // If manager_id is set, treat it as item ID
+            $inventory["details"] = $this->Receptionist_model->get_all_managers($manager_id);
+            // Check if the item exists
+            if (empty($inventory["details"])) {
+                $this->session->set_flashdata(
+                    "message",
+                    "Item not found."
+                );
+            }
+        } elseif ($manager_name) {
+            // Otherwise, treat it as item name
+            $inventory["details"] = $this->Receptionist_model->get_all_managers($manager_name);
+            // Check if the item exists
+            if (empty($inventory["details"])) {
+                $this->session->set_flashdata(
+                    "message",
+                    "Item not found."
+                );
+            }
+        }
     }
 
-    // Load the inventory profile view
-    $data['base_url'] = base_url();
-    $data['main_content'] = 'receptionist/inventory_details';
-    $this->load->view('common/template', $data);
+    // Fetch all inventory items to display regardless of search
+    $data["details"] = $this->Receptionist_model->get_all_managers();
+
+    // Prepare data for the view
+    $data["main_content"] = "receptionist/inventory_details"; // View file to load
+    $data["base_url"] = $this->config->item("base_url"); // Base URL for links
+    $data["inventory"] = $inventory; // Pass searched inventory data (if any) to the view
+
+    // Load the view with the data
+    $this->load->view("common/template", $data);
 }
+
 
   public function edit()
 {
@@ -530,6 +579,37 @@ public function save() {
         $data['main_content']='receptionist/doctor_profiles';
         $this->load->view('common/template',$data);
     }
+
+ public function delete_item()
+{
+    // Get the item ID from the POST parameters
+    $manager_id = $this->input->post('delete_id');
+
+    // Get the referring URL (previous page)
+    $previous_page = $this->input->server('HTTP_REFERER');
+
+    // Check if an item ID was provided
+    if ($manager_id) {
+        // Call the model function to delete the item
+        $deleted = $this->Receptionist_model->deleteManager($manager_id);
+
+        if ($deleted) {
+            // Set a success message if the item was deleted
+            $this->session->set_flashdata('message', 'Item deleted successfully.');
+        } else {
+            // Set an error message if the item couldn't be deleted
+            $this->session->set_flashdata('message', 'Unable to delete the item.');
+        }
+    }
+
+    // Redirect back to the previous page
+    if ($previous_page) {
+        redirect($previous_page);
+    } else {
+        // If no referring URL is available, fall back to a default page (like inventory details)
+        redirect('receptionist/inventory_details');
+    }
+}
 
 
 

@@ -61,7 +61,7 @@
                         <h1 class="pt-4 text-success">Inventory Details</h1>
                     </div>
                     <div class="col-md-6" align="right">
-                        <form action="<?= $base_url ?>inventory/inventory_details" method="post" onsubmit="checkInput()" class="d-flex align-items-center justify-content-between border rounded shadow-sm" style="background-color: #f8f9fa;">
+                        <form action="<?= $base_url ?>receptionist/inventory_details" method="post" onsubmit="checkInput()" class="d-flex align-items-center justify-content-between border rounded shadow-sm" style="background-color: #f8f9fa;">
                             <div class="input-group me-2">
                                 <input type="text" id="itemInput" class="form-control form-control-lg" placeholder="Enter Item ID or Name" required>
                             </div>
@@ -85,25 +85,25 @@
                         <tbody>
                             <?php if (!empty($details['details'])): ?>
                                 <?php foreach ($details['manger_info'] as $detail): ?>
-                                    <tr>
+                                       <tr>
                                         <td><?= ($detail['manager_id']) ?></td>
                                         <td><?= ($detail['manager_name']) ?></td>
-                                        <td><?= ($detail['Phone']) ?></td>
+                                        <td><?= ($detail['phone']) ?></td>
                                         <td><?= ($detail['email']) ?></td>
-                                        <td><?= ($detail['addresss']) ?></td>
+                                        <td><?= ($detail['address']) ?></td>
                                         <td>
-                                            <form class="d-inline-block" action="<?= $base_url ?>Inventory/edit_item" method="post">
-                                                <input type="hidden" name="edit_id" value="<?= ($detail['manager_id']) ?>">
+                                            <form class="d-inline-block" action="<?= $base_url ?>receptionist/edit" method="post">
+                                                <input type="text" name="edit_id" value="<?= ($detail['manager_id']) ?>">
                                                 <button type="submit" class="btn btn-success mb-2">
-                                                    <span class="ti-pencil-alt"></span> Edit Item
+                                                    <span class="ti-pencil-alt"></span> Edit
                                                 </button>
                                             </form>
 
                                             <!-- Delete Item Form -->
-                                            <form class="d-inline-block" action="<?= $base_url ?>inventory/delete_item" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                            <form class="d-inline-block" action="<?= $base_url ?>receptionist/delete_item" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
                                                 <input type="hidden" name="delete_id" value="<?= ($detail['manager_id']) ?>">
                                                 <button type="submit" class="btn btn-danger mb-2">
-                                                    <span class="ti-trash"></span> Delete Item
+                                                    <span class="ti-trash"></span> Delete 
                                                 </button>
                                             </form>
                                         </td>
@@ -129,7 +129,7 @@
                                             <form class="d-inline-block" action="<?= $base_url ?>receptionist/delete_item" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
                                                 <input type="hidden" name="delete_id" value="<?= ($detail['manager_id']) ?>">
                                                 <button type="submit" class="btn btn-danger mb-2">
-                                                    <span class="ti-trash"></span> Delete Item
+                                                    <span class="ti-trash"></span> Delete 
                                                 </button>
                                             </form>
                                         </td>
