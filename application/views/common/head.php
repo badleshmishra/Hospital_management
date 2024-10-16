@@ -21,3 +21,9 @@
 	<link rel="stylesheet" href="<?= $base_url ?>assets/datatable/dataTables.bootstrap4.min.css">
 
 	<script src="<?= $base_url ?>assets/js/modernizr.min.js"></script>
+
+
+
+<!-- FullCalendar CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>

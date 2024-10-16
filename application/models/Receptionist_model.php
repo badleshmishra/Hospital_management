@@ -243,4 +243,42 @@ public function add_new_receptionist($data) {
             return false;
         }
     }
+
+
+
+    // Insert a new appointment into the appointments table
+    public function insert_appointment($appointmentData) {
+        return $this->db->insert('appointments', $appointmentData);
+    }
+
+
+
+// Get booked appointments for a specific doctor
+public function get_booked_appointments_by_doctor($doctor_id) {
+    $this->db->select('appointment_date, appointment_time'); // Select both date and time
+    $this->db->where('doctor_id', $doctor_id);
+    $query = $this->db->get('appointments');
+    return $query->result_array(); // Return the booked appointment dates and times
+}
+
+
+public function get_all_appointments($doctor_id) {
+    $this->db->select('appointment_date, appointment_time, doctor_id'); // Select date and time
+    $this->db->where('doctor_id', $doctor_id); // Filter by doctor ID
+    $query = $this->db->get('appointments'); // Assuming 'appointments' is your table name
+    return $query->result_array();
+}
+
+
+public function appointment_exists($doctor_id, $appointment_date, $appointment_time)
+{
+    $this->db->where('doctor_id', $doctor_id);
+    $this->db->where('appointment_date', $appointment_date);
+    $this->db->where('appointment_time', $appointment_time);
+    $query = $this->db->get('appointments'); // Replace 'appointments' with your actual appointments table name
+    return $query->num_rows() > 0; // Returns true if a record exists
+}
+
+
+
 }

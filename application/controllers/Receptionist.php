@@ -21,88 +21,123 @@ class Receptionist extends CI_Controller
         $data["base_url"] = $this->config->item("base_url");
         $this->load->view("common/template", $data);
     }
-    public function add_patient()
-    {
-        $data["doctors"] = $this->Receptionist_model->get_doctors();
-        $data["specialists"] = $this->Receptionist_model->get_specialists();
+public function add_patient()
+{
+    $data["doctors"] = $this->Receptionist_model->get_doctors();
+    $data["specialists"] = $this->Receptionist_model->get_specialists();
 
-        // Check if the request is an AJAX request
-        if ($this->input->is_ajax_request()) {
-            $selected_specialist = $this->input->post("specialist_id");
-            $selected_doctor = $this->input->post("doctor_id");
+    // Check if the request is an AJAX request
+    if ($this->input->is_ajax_request()) {
+        $selected_specialist = $this->input->post("specialist_id");
+        $selected_doctor = $this->input->post("doctor_id");
 
-            // Prepare response array
-            $response = [];
+        // Prepare response array
+        $response = [];
 
-            // Fetch doctors based on selected specialist
-            if (!empty($selected_specialist)) {
-                $response[
-                    "doctors"
-                ] = $this->Receptionist_model->fetch_doctors_by_specialist(
-                    $selected_specialist
-                );
-            }
-
-            // Fetch the room number for the selected doctor
-            if (!empty($selected_doctor)) {
-                $doctor_info = $this->Receptionist_model->get_doctor_by_id(
-                    $selected_doctor
-                );
-                $response["room_number"] = $doctor_info
-                    ? $doctor_info["room_no"]
-                    : "";
-            }
-
-            // Return the response as JSON
-            echo json_encode($response);
-            exit();
+        // Fetch doctors based on selected specialist
+        if (!empty($selected_specialist)) {
+            $response["doctors"] = $this->Receptionist_model->fetch_doctors_by_specialist($selected_specialist);
         }
 
-        // Normal form submission logic...
-        if ($this->input->server("REQUEST_METHOD") == "POST") {
-            $patientData = [
-                "first_name" => $this->input->post("first_name"),
-                "age" => $this->input->post("age"),
-                "phone" => $this->input->post("phone"),
-                "email" => $this->input->post("email"),
-                "gender" => $this->input->post("gender"),
-                "address" => $this->input->post("address"),
-                "room_no" => $this->input->post("room_no"),
-                "doctor_id" => $this->input->post("doctor_id"),
-            ];
-
-            // Add basic validation
-            if (
-                !empty($patientData["first_name"]) &&
-                !empty($patientData["age"]) &&
-                !empty($patientData["phone"]) &&
-                !empty($patientData["email"]) &&
-                !empty($patientData["doctor_id"])
-            ) {
-                if ($this->Receptionist_model->insert_patient($patientData)) {
-                    $this->session->set_flashdata(
-                        "success",
-                        "Patient added successfully!"
-                    );
-                    redirect("receptionist/add_patient");
-                } else {
-                    $this->session->set_flashdata(
-                        "error",
-                        "Failed to add patient. Please try again."
-                    );
-                }
-            } else {
-                $this->session->set_flashdata(
-                    "error",
-                    "All fields are required."
-                );
-            }
+        // Fetch the room number for the selected doctor
+        if (!empty($selected_doctor)) {
+            $doctor_info = $this->Receptionist_model->get_doctor_by_id($selected_doctor);
+            $response["room_number"] = $doctor_info ? $doctor_info["room_no"] : "";
         }
-        $data["base_url"] = $this->config->item("base_url"); // Base URL for links
 
-        $data["main_content"] = "receptionist/add_patient";
-        $this->load->view("common/template", $data);
+        // Return the response as JSON
+        echo json_encode($response);
+        exit();
     }
+
+    // Normal form submission logic...
+    if ($this->input->server("REQUEST_METHOD") == "POST") {
+        // Prepare patient data
+        $patientData = [
+            "first_name" => $this->input->post("first_name"),
+            "age" => $this->input->post("age"),
+            "phone" => $this->input->post("phone"),
+            "email" => $this->input->post("email"),
+            "gender" => $this->input->post("gender"),
+            "address" => $this->input->post("address"),
+            "room_no" => $this->input->post("room_no"),
+            "doctor_id" => $this->input->post("doctor_id"),
+        ];
+
+        // Add basic validation
+        if (
+            !empty($patientData["first_name"]) &&
+            !empty($patientData["age"]) &&
+            !empty($patientData["phone"]) &&
+            !empty($patientData["email"]) &&
+            !empty($patientData["doctor_id"])
+        ) {
+            // Check if the appointment date and time are provided
+            $appointmentDate = $this->input->post("appointment_date");
+            $appointmentTime = $this->input->post("appointment_time");
+
+            if (empty($appointmentDate) || empty($appointmentTime)) {
+                $this->session->set_flashdata("error", "Appointment date and time are required.");
+            } else {
+                // Check if the doctor already has an appointment at the same date and time
+                if ($this->Receptionist_model->appointment_exists($patientData["doctor_id"], $appointmentDate, $appointmentTime)) {
+                    // Show alert message if appointment exists
+                    $this->session->set_flashdata("error", "The doctor already has a fixed appointment at this date and time.");
+                } else {
+                    // Insert the patient record
+                    if ($this->Receptionist_model->insert_patient($patientData)) {
+                        $patient_id = $this->db->insert_id(); // Get the inserted patient ID
+
+                        // Prepare appointment data
+                        $appointmentData = [
+                            "patient_id" => $patient_id,
+                            "doctor_id" => $patientData["doctor_id"],
+                            "appointment_date" => $appointmentDate,
+                            "appointment_time" => $appointmentTime,
+                        ];
+
+                        // Insert the appointment
+                        if ($this->Receptionist_model->insert_appointment($appointmentData)) {
+                            $this->session->set_flashdata("success", "Patient and appointment added successfully!");
+                        } else {
+                            $this->session->set_flashdata("error", "Failed to add appointment. Please try again.");
+                        }
+                    } else {
+                        $this->session->set_flashdata("error", "Failed to add patient. Please try again.");
+                    }
+                }
+                redirect("receptionist/add_patient");
+            }
+        } else {
+            $this->session->set_flashdata("error", "All fields are required.");
+        }
+    }
+
+    $data["base_url"] = $this->config->item("base_url"); // Base URL for links
+    $data["main_content"] = "receptionist/add_patient";
+    $this->load->view("common/template", $data);
+}
+
+
+
+public function get_booked_appointments() {
+    // Assuming the doctor ID is passed from the form submission via POST
+    $doctor_id = $this->input->post('doctor_id'); // Get doctor ID from form input
+    $appointments = $this->Receptionist_model->get_all_appointments($doctor_id); // Fetch appointments for the specified doctor
+    $events = [];
+
+    foreach ($appointments as $appointment) {
+        $events[] = [
+            'title' => 'Booked', // Mark as booked
+            'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'], // Date and time
+            'backgroundColor' => 'red', // Mark booked slots in red
+            'borderColor' => 'red',
+        ];
+    }
+
+    echo json_encode($events); // Return the appointments as JSON
+}
+
 
     public function patient()
     {
