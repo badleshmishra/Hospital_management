@@ -1,6 +1,9 @@
 <?php 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 class Inventory_manager extends CI_Controller {
 
@@ -10,15 +13,20 @@ class Inventory_manager extends CI_Controller {
     }
 
     public function index() {
-        // Redirect to the inventory items view
-        redirect('inventory_manager/view_item');
+        //var_dump(print_r($this->session->userdata(), true));
+        
+        $data=array();
+        $data['base_url'] = base_url();
+        $data['main_content'] = 'inventory_manager/dashboard';
+        $this->load->view('common/template', $data);
     }
 
     public function view_item() {
         // Fetch items and load the view
-        $data['items'] = $this->Inventory_model->get_all_items(); // Fetch data from model
+        die($this->session->userdata());
+         $data['items'] = $this->Inventory_model->get_all_items(); // Fetch data from model
         $data['base_url'] = $this->config->item('base_url');
-        $data['main_content'] = 'inventory/view_item'; // Set the view file
+        $data['main_content'] = 'inventory_manager/view_item'; // Set the view file
         $this->load->view('common/template', $data); // Load the template
     }
 
@@ -46,14 +54,8 @@ class Inventory_manager extends CI_Controller {
         // Load the view for adding an item
         $data['base_url'] = $this->config->item('base_url');
         $data['main_content'] = 'inventory/add_item';
-   
-    public function index() {
-//die(print_r($this->session->userdata(), true));
-        // Inventory manager's dashboard view
-        $data=array();
-        $data['main_content'] = 'inventory_manager/dashboard';
-        $this->load->view('common/template', $data);
     }
+    
 
    
     public function update_quantity() {

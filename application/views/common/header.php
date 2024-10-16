@@ -124,19 +124,19 @@
 					                    aria-expanded="false"><span class="ti-wheelchair"></span> Patients</a>
 					                    <div class="dropdown-menu">
 					                        <a class="dropdown-item" href="<?= base_url() ?>receptionist/add_patient">Add Patient</a>
-					                        <a class="dropdown-item" href="<?=  base_url() ?>receptionist/view_patients">All Patients</a>
+					                        <!-- <a class="dropdown-item" href="<?=  base_url() ?>receptionist/view_patients">All Patients</a> -->
 					                        <a class="dropdown-item" href="<?= base_url() ?>receptionist/patient_details">Patient Details</a>
 					                    </div>
 					                </li>
 					                <li class="nav-item dropdown">
-					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+					                    <a class="nav-link"  href="<?=base_url() ?>receptionist/doctor_details" role="button" aria-haspopup="true"
 					                    aria-expanded="false"><span class="ti-user"></span> Doctors</a>
-					                    <div class="dropdown-menu">
-					                        
-					                        <a class="dropdown-item" href="<?=base_url() ?>receptionist/doctor_details">All Doctors</a>
-					                        <a class="dropdown-item" href="about-doctor.html">Doctor Details</a>
-					                        <a class="dropdown-item" href="edit-doctor.html">Edit Doctor</a>
-					                    </div>
+					               
+					                </li>  
+					                 <li class="nav-item dropdown">
+					                    <a class="nav-link"  href="<?=base_url() ?>receptionist/inventory_details" role="button" aria-haspopup="true"
+					                    aria-expanded="false"><span class="ti-user"></span> Inventory</a>
+					               
 					                </li>
 					                <li class="nav-item dropdown">
 					                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"

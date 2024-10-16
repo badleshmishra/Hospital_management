@@ -40,7 +40,7 @@
                                     <div class="card mb-4">
                                         <img class="card-img-top" src="<?= $base_url ?>assets/images/<?= $details->profile_image ?>" alt="Card image">
                                         <div class="card-body">
-                                            <h4 class="card-title">Dr. <?= $details->doctor_name ?> <?= $details->last_name ?></h4>
+                                            <h4 class="card-title">Dr. <?= $details['doctor_name'] ?> </h4>
                                             <p class="card-text">Some quick example text to build on the card title and make up the
                                                 bulk of the
                                                 card's

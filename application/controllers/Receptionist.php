@@ -21,88 +21,123 @@ class Receptionist extends CI_Controller
         $data["base_url"] = $this->config->item("base_url");
         $this->load->view("common/template", $data);
     }
-    public function add_patient()
-    {
-        $data["doctors"] = $this->Receptionist_model->get_doctors();
-        $data["specialists"] = $this->Receptionist_model->get_specialists();
+public function add_patient()
+{
+    $data["doctors"] = $this->Receptionist_model->get_doctors();
+    $data["specialists"] = $this->Receptionist_model->get_specialists();
 
-        // Check if the request is an AJAX request
-        if ($this->input->is_ajax_request()) {
-            $selected_specialist = $this->input->post("specialist_id");
-            $selected_doctor = $this->input->post("doctor_id");
+    // Check if the request is an AJAX request
+    if ($this->input->is_ajax_request()) {
+        $selected_specialist = $this->input->post("specialist_id");
+        $selected_doctor = $this->input->post("doctor_id");
 
-            // Prepare response array
-            $response = [];
+        // Prepare response array
+        $response = [];
 
-            // Fetch doctors based on selected specialist
-            if (!empty($selected_specialist)) {
-                $response[
-                    "doctors"
-                ] = $this->Receptionist_model->fetch_doctors_by_specialist(
-                    $selected_specialist
-                );
-            }
-
-            // Fetch the room number for the selected doctor
-            if (!empty($selected_doctor)) {
-                $doctor_info = $this->Receptionist_model->get_doctor_by_id(
-                    $selected_doctor
-                );
-                $response["room_number"] = $doctor_info
-                    ? $doctor_info["room_no"]
-                    : "";
-            }
-
-            // Return the response as JSON
-            echo json_encode($response);
-            exit();
+        // Fetch doctors based on selected specialist
+        if (!empty($selected_specialist)) {
+            $response["doctors"] = $this->Receptionist_model->fetch_doctors_by_specialist($selected_specialist);
         }
 
-        // Normal form submission logic...
-        if ($this->input->server("REQUEST_METHOD") == "POST") {
-            $patientData = [
-                "first_name" => $this->input->post("first_name"),
-                "age" => $this->input->post("age"),
-                "phone" => $this->input->post("phone"),
-                "email" => $this->input->post("email"),
-                "gender" => $this->input->post("gender"),
-                "address" => $this->input->post("address"),
-                "room_no" => $this->input->post("room_no"),
-                "doctor_id" => $this->input->post("doctor_id"),
-            ];
-
-            // Add basic validation
-            if (
-                !empty($patientData["first_name"]) &&
-                !empty($patientData["age"]) &&
-                !empty($patientData["phone"]) &&
-                !empty($patientData["email"]) &&
-                !empty($patientData["doctor_id"])
-            ) {
-                if ($this->Receptionist_model->insert_patient($patientData)) {
-                    $this->session->set_flashdata(
-                        "success",
-                        "Patient added successfully!"
-                    );
-                    redirect("receptionist/add_patient");
-                } else {
-                    $this->session->set_flashdata(
-                        "error",
-                        "Failed to add patient. Please try again."
-                    );
-                }
-            } else {
-                $this->session->set_flashdata(
-                    "error",
-                    "All fields are required."
-                );
-            }
+        // Fetch the room number for the selected doctor
+        if (!empty($selected_doctor)) {
+            $doctor_info = $this->Receptionist_model->get_doctor_by_id($selected_doctor);
+            $response["room_number"] = $doctor_info ? $doctor_info["room_no"] : "";
         }
-        $data["base_url"] = $this->config->item("base_url"); // Base URL for links
 
-        $data["main_content"] = "receptionist/add_patient";
-        $this->load->view("common/template", $data);
+        // Return the response as JSON
+        echo json_encode($response);
+        exit();
     }
+
+    // Normal form submission logic...
+    if ($this->input->server("REQUEST_METHOD") == "POST") {
+        // Prepare patient data
+        $patientData = [
+            "first_name" => $this->input->post("first_name"),
+            "age" => $this->input->post("age"),
+            "phone" => $this->input->post("phone"),
+            "email" => $this->input->post("email"),
+            "gender" => $this->input->post("gender"),
+            "address" => $this->input->post("address"),
+            "room_no" => $this->input->post("room_no"),
+            "doctor_id" => $this->input->post("doctor_id"),
+        ];
+
+        // Add basic validation
+        if (
+            !empty($patientData["first_name"]) &&
+            !empty($patientData["age"]) &&
+            !empty($patientData["phone"]) &&
+            !empty($patientData["email"]) &&
+            !empty($patientData["doctor_id"])
+        ) {
+            // Check if the appointment date and time are provided
+            $appointmentDate = $this->input->post("appointment_date");
+            $appointmentTime = $this->input->post("appointment_time");
+
+            if (empty($appointmentDate) || empty($appointmentTime)) {
+                $this->session->set_flashdata("error", "Appointment date and time are required.");
+            } else {
+                // Check if the doctor already has an appointment at the same date and time
+                if ($this->Receptionist_model->appointment_exists($patientData["doctor_id"], $appointmentDate, $appointmentTime)) {
+                    // Show alert message if appointment exists
+                    $this->session->set_flashdata("error", "The doctor already has a fixed appointment at this date and time.");
+                } else {
+                    // Insert the patient record
+                    if ($this->Receptionist_model->insert_patient($patientData)) {
+                        $patient_id = $this->db->insert_id(); // Get the inserted patient ID
+
+                        // Prepare appointment data
+                        $appointmentData = [
+                            "patient_id" => $patient_id,
+                            "doctor_id" => $patientData["doctor_id"],
+                            "appointment_date" => $appointmentDate,
+                            "appointment_time" => $appointmentTime,
+                        ];
+
+                        // Insert the appointment
+                        if ($this->Receptionist_model->insert_appointment($appointmentData)) {
+                            $this->session->set_flashdata("success", "Patient and appointment added successfully!");
+                        } else {
+                            $this->session->set_flashdata("error", "Failed to add appointment. Please try again.");
+                        }
+                    } else {
+                        $this->session->set_flashdata("error", "Failed to add patient. Please try again.");
+                    }
+                }
+                redirect("receptionist/add_patient");
+            }
+        } else {
+            $this->session->set_flashdata("error", "All fields are required.");
+        }
+    }
+
+    $data["base_url"] = $this->config->item("base_url"); // Base URL for links
+    $data["main_content"] = "receptionist/add_patient";
+    $this->load->view("common/template", $data);
+}
+
+
+
+public function get_booked_appointments() {
+    // Assuming the doctor ID is passed from the form submission via POST
+    $doctor_id = $this->input->post('doctor_id'); // Get doctor ID from form input
+    $appointments = $this->Receptionist_model->get_all_appointments($doctor_id); // Fetch appointments for the specified doctor
+    $events = [];
+
+    foreach ($appointments as $appointment) {
+        $events[] = [
+            'title' => 'Booked', // Mark as booked
+            'start' => $appointment['appointment_date'] . 'T' . $appointment['appointment_time'], // Date and time
+            'backgroundColor' => 'red', // Mark booked slots in red
+            'borderColor' => 'red',
+        ];
+    }
+
+    echo json_encode($events); // Return the appointments as JSON
+}
+
 
     public function patient()
     {
@@ -200,6 +235,7 @@ public function add_doctor()
                 "specialty_id" => $this->input->post("specialist_id"),
                 "address" => $this->input->post("address"),
             ];
+            var_dump($doctorData);
 
             // Check for existing email
             $email = $doctorData["email"];
@@ -207,25 +243,26 @@ public function add_doctor()
                 $email
             );
 
-            if ($existingUser) {
-                $this->session->set_flashdata(
-                    "error",
-                    "This email is already registered. Please use a different email."
-                );
-                redirect("receptionist/add_doctor"); // Redirect to the form
+            // if ($existingUser) {
+            //     $this->session->set_flashdata(
+            //         "error",
+            //         "This email is already registered. Please use a different email."
+            //     );
+            //     redirect("receptionist/add_doctor"); // Redirect to the form
+            // }
+            $specialty_id = $this->input->post('specialty_id');
+            if (empty($specialty_id)) {
+                $specialty_id = NULL;  // Set NULL if the field is empty
             }
-
             // Create user data
             $userData = [
                 "username" => $doctorData["doctor_name"],
-                "password" => password_hash(
-                    $this->input->post("password"),
-                    PASSWORD_DEFAULT
-                ),
+                "password" =>$this->input->post("password"),
                 "role" => $this->input->post("role"),
                 "email" => $doctorData["email"],
-                "specialty_id" => $doctorData["specialty_id"],
+                "specialty_id" => $specialty_id
             ];
+            var_dump($userData);
 
             // Insert user first
             $user_id = $this->Receptionist_model->add_new_user($userData);
@@ -416,6 +453,199 @@ public function delete_doctor()
         redirect('receptionist/doctor_details');
     }
 }
+
+
+// public function inventory_details($manager_id = null) {
+
+//     $data = array();
+    
+//     $inventory_details = $this->Receptionist_model->get_all_managers();
+
+
+//     // Check if the inventory details exist
+//     if ($inventory_details) {
+//         // Display the inventory details (for simplicity, showing as JSON)
+//         $data['details'] = $inventory_details;
+//     } else {
+//         // If not found, show an error message
+//         echo "Inventory details not found for this item.";
+//     }
+
+//     // Load the inventory profile view
+//     $data['base_url'] = base_url();
+//     $data['main_content'] = 'receptionist/inventory_details';
+//     $this->load->view('common/template', $data);
+// }
+
+public function inventory_details()
+{
+    // Initialize the data array and the inventory array
+    $data = []; // This will hold the view data
+    $inventory = []; // This will hold inventory details
+
+    // Get the item ID or name from the POST parameters
+    $manager_id = isset($_POST["manager_id"]) ? $_POST["manager_id"] : null;
+    $manager_name = isset($_POST["manager_name"]) ? $_POST["manager_name"] : null;
+
+    // Check if the form has been submitted
+    if ($manager_id || $manager_name) {
+        // Determine if the input is an ID or a name
+        if ($manager_id) {
+            // If manager_id is set, treat it as item ID
+            $inventory["details"] = $this->Receptionist_model->get_all_managers($manager_id);
+            // Check if the item exists
+            if (empty($inventory["details"])) {
+                $this->session->set_flashdata(
+                    "message",
+                    "Item not found."
+                );
+            }
+        } elseif ($manager_name) {
+            // Otherwise, treat it as item name
+            $inventory["details"] = $this->Receptionist_model->get_all_managers($manager_name);
+            // Check if the item exists
+            if (empty($inventory["details"])) {
+                $this->session->set_flashdata(
+                    "message",
+                    "Item not found."
+                );
+            }
+        }
+    }
+
+    // Fetch all inventory items to display regardless of search
+    $data["details"] = $this->Receptionist_model->get_all_managers();
+
+    // Prepare data for the view
+    $data["main_content"] = "receptionist/inventory_details"; // View file to load
+    $data["base_url"] = $this->config->item("base_url"); // Base URL for links
+    $data["inventory"] = $inventory; // Pass searched inventory data (if any) to the view
+
+    // Load the view with the data
+    $this->load->view("common/template", $data);
+}
+
+
+  public function edit()
+{
+    if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        $data = array();
+        $data['manger_id'] = $this->input->post('edit_id');
+
+        if ($data['manger_id']) {
+            // Fetch doctor information
+            $data['manager_info'] = $this->Receptionist_model->get_manager_info(null, $data['manger_id']);
+        } else {
+            echo "Doctor ID not found!";
+            return;
+        }
+
+        $data['main_content'] = 'receptionist/inventory_info';
+        $data['base_url'] = base_url();
+        $this->load->view('common/template', $data);
+    } else {
+        redirect(base_url('home'));
+    }
+}
+
+
+public function save() {
+    if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        // Correct syntax for assigning array values
+        $manager = array(
+            'manager_id' => $this->input->post('manager_id'), // Make sure you are receiving the manager_id
+            'manager_name' => $this->input->post('manager_name'),
+            'last_name' => $this->input->post('last_name'),
+            'age' => $this->input->post('age'),
+            'phone' => $this->input->post('phone'),
+            'gender' => $this->input->post('gender'),
+            'email' => $this->input->post('email'),
+            'address' => $this->input->post('address')
+        );
+
+        // Load the upload library
+        $this->load->library('upload');
+
+        // Define the upload path
+        $uploadPath = FCPATH . "/assets/images/";
+
+        // Log the upload path for debugging
+        log_message('debug', 'Upload Path: ' . $uploadPath);
+
+        // Check if an image file was uploaded
+        if (!empty($_FILES['file_upload']['name'])) {
+            // Set upload configuration
+            $config['upload_path'] = $uploadPath;
+            $config['allowed_types'] = 'jpg|jpeg|png|gif|avif';
+            $config['file_name'] = time() . '_' . $_FILES['file_upload']['name'];
+
+            $this->upload->initialize($config);
+
+            // Attempt to upload the file
+            if ($this->upload->do_upload('file_upload')) {
+                $uploadData = $this->upload->data();
+                $manager['image'] = $uploadData['file_name']; // Store the uploaded image name
+                log_message('debug', 'Image uploaded successfully: ' . $manager['image']);
+            } else {
+                log_message('error', "Image upload failed: " . $this->upload->display_errors());
+            }
+        }
+
+        // Update manager information in the database
+        if ($this->Receptionist_model->update($manager)) {
+            $this->session->set_flashdata('msg', "Manager information updated successfully.");
+            $this->session->set_flashdata('msg_class', "alert-success");
+        } else {
+            $this->session->set_flashdata('msg', "Failed to update manager information.");
+            $this->session->set_flashdata('msg_class', "alert-danger");
+        }
+
+        // Display the manager ID for debugging purposes
+        var_dump($manager['manager_id']);
+
+        redirect('receptionist/inventory_details');
+    }
+}
+
+     public function doctor_profiles($doctor_id){
+        $data =array();
+        $data['base_url'] = base_url();        
+        $data['details']=$this->Receptionist_model->getdoctorprofile($doctor_id);
+        $data['main_content']='receptionist/doctor_profiles';
+        $this->load->view('common/template',$data);
+    }
+
+ public function delete_item()
+{
+    // Get the item ID from the POST parameters
+    $manager_id = $this->input->post('delete_id');
+
+    // Get the referring URL (previous page)
+    $previous_page = $this->input->server('HTTP_REFERER');
+
+    // Check if an item ID was provided
+    if ($manager_id) {
+        // Call the model function to delete the item
+        $deleted = $this->Receptionist_model->deleteManager($manager_id);
+
+        if ($deleted) {
+            // Set a success message if the item was deleted
+            $this->session->set_flashdata('message', 'Item deleted successfully.');
+        } else {
+            // Set an error message if the item couldn't be deleted
+            $this->session->set_flashdata('message', 'Unable to delete the item.');
+        }
+    }
+
+    // Redirect back to the previous page
+    if ($previous_page) {
+        redirect($previous_page);
+    } else {
+        // If no referring URL is available, fall back to a default page (like inventory details)
+        redirect('receptionist/inventory_details');
+    }
+}
+
 
 
 }
