@@ -15,6 +15,7 @@ class Drug_department extends CI_Controller {
 
     public function index() {
         $data = array();
+        $data['drug'] = $this->Drug_department_model->get_drug();
         $data['base_url'] = $this->config->item('base_url');
         $data['main_content'] = 'drug_department/view';
 
@@ -28,10 +29,10 @@ class Drug_department extends CI_Controller {
             $data = array(
                 'patient_id' => $this->input->post('patient_id'),
                 'drug_name' => $this->input->post('drug_name'),
-                'department_name' => $this->input->post('department_name'),
+               // 'department_name' => $this->input->post('department_name'),
                 'quantity_allocated' => $this->input->post('quantity_allocated'),
-                'remaining_quantity' => $this->input->post('remaining_quantity'),
-                'allocated_by' => $this->input->post('allocated_by'),
+                //'remaining_quantity' => $this->input->post('remaining_quantity'),
+                //'allocated_by' => $this->input->post('allocated_by'),
                 'allocation_date' => $this->input->post('allocation_date'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
