@@ -11,17 +11,63 @@ class Doctor extends CI_Controller {
 
         parent::__construct();  // Call parent's constructor for session and role check
 
+         if ($this->session->userdata('role') !== 'doctor') {
+    // Redirect to the login page if the role is not doctor
+    redirect('login');  // Adjust 'login' to your actual login route
+}
+
         //$this->required_role = 'doctor';  // Set role required for this controller
          $this->load->model('Doctor_model');
+
     }
 
-    public function index() {
-        // Doctor's dashboard view
-        $data=array();
+    public function index($user_id = null) {
+
+
+        if ($user_id === null) {
+            $user_id = $this->session->userdata('user_id'); 
+        
+        }
+        $doctor_details = $this->Doctor_model->get_doctor_info($user_id);
+
+        if ($doctor_details) {
+            
+            $this->session->set_userdata('doctor_id', $doctor_details->doctor_id);
+            
+        } else {
+            
+            echo "Doctor id is not found.";
+        }
+        
+
+        // Debugging to check if doctor_id is in session
+        //var_dump($this->session->userdata('doctor_id'));
+
+        $data = array();
+        $doctor_id = $this->session->userdata('doctor_id');
+        
+        // If doctor_id is not set in session, you can handle this gracefully
+        // if (!$doctor_id) {
+        //     echo "Doctor ID not set in session.";
+        //     return; // or redirect to login
+        // }
+
+        $appointment_details = $this->Doctor_model->get_appoitment_info($doctor_id);
+        // echo "<pre>";
+        // print_r($appointment_details);
+        // echo "</pre>";
+
+        if ($appointment_details) {
+            $data['details'] = $appointment_details;
+        } else {
+            echo "Appointment details not found.";
+        }
+
         $data['base_url'] = base_url();
         $data['main_content'] = 'doctor/patient_list';
         $this->load->view('common/template', $data);
     }
+
 
     public function get_details($user_id = null) {
         // Check if the user is logged in by checking the 'logged_in' session key
@@ -31,16 +77,15 @@ class Doctor extends CI_Controller {
             return;
         }
 
-        // If user_id is not passed as a parameter, get it from the session
+        
         if ($user_id === null) {
-            $user_id = $this->session->userdata('user_id'); // Get 'user_id' from the session
+            $user_id = $this->session->userdata('user_id'); 
         
         }
-        // Fetch doctor details from the model
+        
         $doctor_details = $this->Doctor_model->get_doctor_info($user_id);
 
-        // For debugging, you can print the object as JSON or array
-    // echo json_encode($doctor_details); // or
+        //var_dump($doctor_details->doctor_id);
      //print_r($doctor_details);
         
         $data=array();
@@ -48,6 +93,7 @@ class Doctor extends CI_Controller {
         // Check if the doctor details exist
         if ($doctor_details) {
             // Display the doctor details (for simplicity, showing as JSON)
+            
             $data['details'] = $doctor_details;
         } else {
             // If not found, show an error message

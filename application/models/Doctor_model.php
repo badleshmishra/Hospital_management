@@ -61,4 +61,36 @@ class Doctor_model extends CI_Model
         // Execute the update
         return $this->db->update("doctors"); // 'doctors' is the table name
     }
+
+    // In Model
+public function get_appoitment_info($doctor_id = null)
+{
+    // Check if doctor_id is null
+    if ($doctor_id === null) {
+        return false; // No doctor_id passed
+    }
+
+    
+
+    // Start building the query
+    $this->db->select("appointments.*, doctors.*, patients.*");
+    $this->db->from("appointments");
+    $this->db->join("doctors", "appointments.doctor_id = doctors.doctor_id", "inner");
+    $this->db->join("patients", "appointments.patient_id = patients.patient_id", "inner");
+
+    // Apply filter based on doctor_id
+    $this->db->where("appointments.doctor_id", $doctor_id);
+
+    // Execute the query
+    $query = $this->db->get();
+
+    // Return the result row if found
+    if ($query->num_rows() > 0) {
+        return $query->result(); // Return the appointment details
+    } else {
+        return false; // No appointment found for that doctor_id
+    }
+}
+
+
 }

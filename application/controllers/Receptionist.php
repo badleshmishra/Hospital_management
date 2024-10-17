@@ -1,6 +1,6 @@
 <?php defined("BASEPATH") or exit("No direct script access allowed");
 
-ini_set("display_errors", 0);
+ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
 
@@ -217,7 +217,8 @@ public function get_booked_appointments() {
         // Load the view with the data
         $this->load->view("common/template", $data);
     }
-public function add_doctor()
+
+    public function add_doctor()
     {
         // Fetch the list of specialists and roles
         $data["specialists"] = $this->Receptionist_model->get_all_specialists();
@@ -235,7 +236,7 @@ public function add_doctor()
                 "specialty_id" => $this->input->post("specialist_id"),
                 "address" => $this->input->post("address"),
             ];
-            var_dump($doctorData);
+            //var_dump($doctorData);
 
             // Check for existing email
             $email = $doctorData["email"];
@@ -243,14 +244,15 @@ public function add_doctor()
                 $email
             );
 
-            // if ($existingUser) {
-            //     $this->session->set_flashdata(
-            //         "error",
-            //         "This email is already registered. Please use a different email."
-            //     );
-            //     redirect("receptionist/add_doctor"); // Redirect to the form
-            // }
-            $specialty_id = $this->input->post('specialty_id');
+            if ($existingUser) {
+                $this->session->set_flashdata(
+                    "error",
+                    "This email is already registered. Please use a different email."
+                );
+                redirect("receptionist/add_doctor"); // Redirect to the form
+            }
+            $specialty_id = $this->input->post('specialist_id');
+            var_dump($specialty_id);
             if (empty($specialty_id)) {
                 $specialty_id = NULL;  // Set NULL if the field is empty
             }
@@ -455,27 +457,7 @@ public function delete_doctor()
 }
 
 
-// public function inventory_details($manager_id = null) {
 
-//     $data = array();
-    
-//     $inventory_details = $this->Receptionist_model->get_all_managers();
-
-
-//     // Check if the inventory details exist
-//     if ($inventory_details) {
-//         // Display the inventory details (for simplicity, showing as JSON)
-//         $data['details'] = $inventory_details;
-//     } else {
-//         // If not found, show an error message
-//         echo "Inventory details not found for this item.";
-//     }
-
-//     // Load the inventory profile view
-//     $data['base_url'] = base_url();
-//     $data['main_content'] = 'receptionist/inventory_details';
-//     $this->load->view('common/template', $data);
-// }
 
 public function inventory_details()
 {
