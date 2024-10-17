@@ -1,6 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -10,9 +10,7 @@ class Doctor extends CI_Controller {
     public function __construct() {
 
         parent::__construct();  // Call parent's constructor for session and role check
-        ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
         //$this->required_role = 'doctor';  // Set role required for this controller
          $this->load->model('Doctor_model');
     }
@@ -40,6 +38,10 @@ error_reporting(E_ALL);
         }
         // Fetch doctor details from the model
         $doctor_details = $this->Doctor_model->get_doctor_info($user_id);
+
+        // For debugging, you can print the object as JSON or array
+    // echo json_encode($doctor_details); // or
+     //print_r($doctor_details);
         
         $data=array();
 
